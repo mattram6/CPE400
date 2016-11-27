@@ -7,6 +7,7 @@ class Node
         Node();
         ~Node();
     private:
+        int energy;
 };
 
 #endif /* NODE_H */

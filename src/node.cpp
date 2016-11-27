@@ -2,7 +2,7 @@
 
 Node::Node()
 {
-
+    energy = 0;
 }
 
 Node::~Node()
