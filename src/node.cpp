@@ -1,8 +1,8 @@
-#include "node.h"
+#include "../include/node.h"
 
 Node::Node()
 {
-    energy = 0;
+    energy = 100;
 }
 
 Node::~Node()
