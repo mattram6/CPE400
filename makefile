@@ -19,7 +19,7 @@ endif
 CXXFLAGS=-g -Wall -std=c++0x
 
 # .o Compilation
-O_FILES=main.o node.o
+O_FILES=main.o node.o olsr.o
 
 # Point to includes of local directories
 INDLUDES=-I../include
@@ -33,6 +33,9 @@ main.o: src/main.cpp
 
 node.o: src/node.cpp
 	$(CC) $(CXXFLAGS) -c src/node.cpp -o node.o $(INDLUDES)
+
+olsr.o: src/olsr.cpp
+	$(CC) $(CXXFLAGS) -c src/olsr.cpp -o olsr.o $(INDLUDES)
 
 clean:
 	-@if rm *.o Tutorial 2>/dev/null || true; then echo "Main Removed"; else echo "No Main"; fi
