@@ -4,11 +4,10 @@ UNAME_S := $(shell uname -s)
 # Linux
 ifeq ($(UNAME_S), Linux)
 	CC=g++
-	LIBS=-lSDL2 -lGLEW -lGL -lassimp
 # Mac
 else
 	CC=clang++
-	LIBS=-lSDL2 -framework OpenGL -framework Cocoa -lGLEW -stdlib=libc++
+	LIBS=-stdlib=libc++
 endif
 
 # Paths, use this to set Include directories, or library directories; uncomment in all: if used
@@ -38,4 +37,4 @@ olsr.o: src/olsr.cpp
 	$(CC) $(CXXFLAGS) -c src/olsr.cpp -o olsr.o $(INDLUDES)
 
 clean:
-	-@if rm *.o Tutorial 2>/dev/null || true; then echo "Main Removed"; else echo "No Main"; fi
+	-@if rm *.o Tutorial 2>/dev/null || true; then echo "Clean"; else echo "No Main"; fi
