@@ -5,6 +5,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Simulation" << endl;
+    OLSR myNetwork;
+	Node myNode;
     return 0;
 }
