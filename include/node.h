@@ -1,6 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <vector>
+using namespace std;
 class Node
 {
     public:
@@ -8,9 +10,9 @@ class Node
         ~Node();
     private:
         int energy;
-        //vector<Node> *neighbor1;
-        //vector<Node> *neighbor2;
-        //bool MPR;
+        vector<Node*> oneHopNeighbor;
+        vector<Node*> twoHopNeighbor;
+        bool MPR;
 };
 
 #endif /* NODE_H */

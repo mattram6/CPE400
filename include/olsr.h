@@ -11,10 +11,11 @@ class OLSR
     public:
         OLSR();
         ~OLSR();
-
-        //broadcastHello(nodeID);
+		void pushNodes(int num);
+		int getNumOfNodes();
+        void broadcastHello(int nodeID);
     private:
-        vector<Node> *network;
+        vector<Node> network;
 };
 
 #endif /* OLSR_H */
