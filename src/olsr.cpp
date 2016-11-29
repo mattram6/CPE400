@@ -11,7 +11,22 @@ OLSR::OLSR()
     /*for(int i = 0; i < network.length(); i++)
     {
         broadcastHello(network[i]);
+        {
+            neighbordummy = network[i].getNeighbors();
+
+            for(int i = 0; i < network.length(); i++)
+            {
+                if(selected node)
+                    // do nothing
+                else // regular case (all other nodes)
+                {
+                    nework[i].setNeighbors2(network[i].getNeighbors() + neighbordummy);
+                }
+            }
+        }
     }*/
+
+    //routing table
 
 }
 
