@@ -16,54 +16,7 @@ OLSR::OLSR()
     network[3]->addOneHopNeighbor(network[2]);
     network[3]->addOneHopNeighbor(network[4]);
     network[4]->addOneHopNeighbor(network[3]);
-
-	for(int p = 0; p < getNumOfNodes(); p++)
-    {
-        broadcastHello(network[p]);
-    }
-	cout << "1 Hop Neighbors of Network" << endl << endl;
-	for(int x = 0; x < getNumOfNodes(); x++)
-	{
-		Node* currentNode = network[x];
-		cout << "Node " << x << ": ";
-		for(int y = 0; y < currentNode->getOneHopNeighborNum(); y++ )
-		{
-			cout << (currentNode-> getOneHopNeighbor(y)->getNodeID()) << " ";
-		}
-		cout << endl;
-	}
-    cout << endl << "2 Hop Neighbors of Network" << endl << endl;
-	for(int i = 0; i < getNumOfNodes(); i++)
-	{
-		Node* currentNode = network[i];
-		cout << "Node " << i << ": ";
-		for(int j = 0; j < currentNode->getTwoHopNeighborNum(); j++ )
-		{
-			cout << (currentNode-> getTwoHopNeighbor(j)->getNodeID()) << " ";
-		}
-		cout << endl;
-	}
 	
-    /*
-    for(unsigned int i = 0; i < getNumOfNodes(); i++)
-    {
-        broadcastHello(network[i]);
-        {
-            neighbordummy = network[i].getNeighbors();
-
-            for(int i = 0; i < network.length(); i++)
-            {
-                if(selected node)
-                    // do nothing
-                else // regular case (all other nodes)
-                {
-                    nework[i].setNeighbors2(network[i].getNeighbors() + neighbordummy);
-                }
-            }
-        }
-    }
-	*/
-
     //routing table
 
 }
@@ -123,4 +76,10 @@ void OLSR::broadcastHello(Node* node)
 		}
 	}
 	
+}
+
+// Get Node
+Node* OLSR::getNode(int index)
+{
+    return network[index];
 }
