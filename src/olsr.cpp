@@ -17,11 +17,32 @@ OLSR::OLSR()
     network[3]->addOneHopNeighbor(network[4]);
     network[4]->addOneHopNeighbor(network[3]);
 
-    cout << "Node 0: " << network[0]->getOneHopNeighborNum() << endl;
-    cout << "Node 1: " << network[1]->getOneHopNeighborNum() << endl;
-    cout << "Node 2: " << network[2]->getOneHopNeighborNum() << endl;
-    cout << "Node 3: " << network[3]->getOneHopNeighborNum() << endl;
-    cout << "Node 4: " << network[4]->getOneHopNeighborNum() << endl;
+	for(int p = 0; p < getNumOfNodes(); p++)
+    {
+        broadcastHello(network[p]);
+    }
+	cout << "1 Hop Neighbors of Network" << endl << endl;
+	for(int x = 0; x < getNumOfNodes(); x++)
+	{
+		Node* currentNode = network[x];
+		cout << "Node " << x << ": ";
+		for(int y = 0; y < currentNode->getOneHopNeighborNum(); y++ )
+		{
+			cout << (currentNode-> getOneHopNeighbor(y)->getNodeID()) << " ";
+		}
+		cout << endl;
+	}
+    cout << endl << "2 Hop Neighbors of Network" << endl << endl;
+	for(int i = 0; i < getNumOfNodes(); i++)
+	{
+		Node* currentNode = network[i];
+		cout << "Node " << i << ": ";
+		for(int j = 0; j < currentNode->getTwoHopNeighborNum(); j++ )
+		{
+			cout << (currentNode-> getTwoHopNeighbor(j)->getNodeID()) << " ";
+		}
+		cout << endl;
+	}
 	
     /*
     for(unsigned int i = 0; i < getNumOfNodes(); i++)
@@ -60,7 +81,7 @@ void OLSR::pushNodes(int num)
 	network.resize(num);
     for(int i = 0; i < num; i++)
     {
-        network[i] = new Node();
+        network[i] = new Node(i);
     }
 }
 
@@ -70,26 +91,36 @@ int OLSR::getNumOfNodes()
 	return network.size();
 }
 
-
+//Sets up 2 Hop Neighbor Table
 void OLSR::broadcastHello(Node* node)
 {
     for(int i = 0; i < node->getOneHopNeighborNum(); i++)
     {
-        vector<Node*> TwoHopNeighbor = node->getOneHopNeighbors();
-        for(int j = 0; j < TwoHopNeighbor.size(); j++)
+        Node *currentNeighbor = node -> getOneHopNeighbor(i);
+        for(int j = 0; j < currentNeighbor -> getOneHopNeighborNum(); j++)
         {
-            for(int k = 0; k < node->getOneHopNeighbor[i]->getOneHopNeighborNum(); k++)
+			for(int k = 0; k < node -> getOneHopNeighborNum(); k++)
             {
-                if(TwoHopNeighbor[j] == node->getOneHopNeighbor[i])
+            	if(node == currentNeighbor -> getOneHopNeighbor(j)) 
                 {
-                    // do nothing
+					break;
                 }
-                if(node == node->getOneHopNeighbor[i]->getOneHopNeighbor[k])
-                {
-                    
-            
-            
-    }
-        
+				else if((currentNeighbor -> getOneHopNeighbor(j) == node -> getOneHopNeighbor(k)))
+				{
+					break;
+				}
+				else if( node->inTwoHopTable(currentNeighbor -> getOneHopNeighbor(j)))
+				{
+					break;
+				}
+                else
+				{
+					cout << j << "  " << k << endl;
+					node -> addTwoHopNeighbor(currentNeighbor -> getOneHopNeighbor(j));
+					break;
+				}
+    		}
+		}
+	}
 	
 }

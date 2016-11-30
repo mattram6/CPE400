@@ -1,8 +1,9 @@
 #include "../include/node.h"
 #include <iostream>
 
-Node::Node()
+Node::Node(int ID)
 {
+	nodeID = ID;
     energy = 100;
 	MPR = false;
     oneHopNeighbor.clear();
@@ -25,6 +26,9 @@ Node::~Node()
 	twoHopNeighbor.shrink_to_fit();
 }
 
+
+// 1 Hop 
+
 void Node::addOneHopNeighbor(Node* neighbor)
 {
     oneHopNeighbor.push_back(neighbor);
@@ -43,4 +47,43 @@ Node* Node::getOneHopNeighbor(int index)
 vector<Node*> Node::getOneHopNeighbors()
 {
     return oneHopNeighbor;
+}
+
+//2 Hop
+
+bool Node::inTwoHopTable(Node* neighbor)
+{
+	for(int i = 0; i < getTwoHopNeighborNum(); i++)
+	{
+		if(twoHopNeighbor[i] == neighbor)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void Node::addTwoHopNeighbor(Node* neighbor)
+{
+    twoHopNeighbor.push_back(neighbor);
+}
+
+int Node::getTwoHopNeighborNum()
+{
+    return twoHopNeighbor.size();
+}
+
+Node* Node::getTwoHopNeighbor(int index)
+{
+    return twoHopNeighbor[index];
+}
+
+vector<Node*> Node::getTwoHopNeighbors()
+{
+    return twoHopNeighbor;
+}
+
+int Node::getNodeID()
+{
+	return nodeID;
 }
