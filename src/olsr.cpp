@@ -83,3 +83,31 @@ Node* OLSR::getNode(int index)
 {
     return network[index];
 }
+
+void OLSR::topologyControl()
+{
+    for(int i = 0; i < getNumOfNodes(); i++)
+    {
+        if(network[i]->getOneHopNeighborNum() == 1)
+        {
+            network[i]->getOneHopNeighbor(0)->setMPR(true);
+        }
+    }
+
+    int counter = 4;
+    while(counter > 0)
+    {
+        for(int i = 0; i < network.size(); i++)
+        {
+            if(network[i]->getOneHopNeighborNum() == counter)
+            {
+                if(!(network[i]->neighboringMPR()))
+                {
+                    network[i]->setMPR(true);
+                }
+            }
+        }
+        counter--;
+    }
+
+}

@@ -14,6 +14,7 @@ class OLSR
 		void pushNodes(int num);
 		int getNumOfNodes();
         void broadcastHello(Node* node);
+        void topologyControl();
         Node* getNode(int index);
     private:
         vector<Node*> network;

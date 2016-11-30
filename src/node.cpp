@@ -87,3 +87,26 @@ int Node::getNodeID()
 {
 	return nodeID;
 }
+
+void Node::setMPR(bool flag)
+{
+    MPR = flag;
+}
+
+bool Node::getMPR()
+{
+    return MPR;
+}
+
+bool Node::neighboringMPR()
+{
+    bool neighboringMPR = false;
+    for(int i = 0; i < getOneHopNeighborNum(); i++)
+    {
+        if(oneHopNeighbor[i]->getMPR())
+        {
+            neighboringMPR = true;
+        }
+    }
+    return neighboringMPR;
+}

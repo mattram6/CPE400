@@ -6,6 +6,8 @@ using namespace std;
 int main()
 {
     OLSR *myNetwork = new OLSR();
+
+    // Debugging
     for(int p = 0; p < myNetwork->getNumOfNodes(); p++)
     {
         myNetwork->broadcastHello(myNetwork->getNode(p));
@@ -33,7 +35,13 @@ int main()
 		cout << endl;
 	}
 
-    //myNetwork->topologyControl();
+    myNetwork->topologyControl();
+    
+    // Debugging
+    for(int i = 0; i < myNetwork->getNumOfNodes(); i++)
+    {
+        cout << endl << "Node " << i << ": " << myNetwork->getNode(i)->getMPR() << endl;
+    }
     //myNetwork->createRoutingTable();
 
     /*while(engine == good)

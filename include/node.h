@@ -21,6 +21,9 @@ class Node
 		void addTwoHopNeighbor(Node* neighbor);
         Node* getTwoHopNeighbor(int index);
         int getTwoHopNeighborNum();
+        void setMPR(bool flag);
+        bool getMPR();
+        bool neighboringMPR();
 
     private:
         int energy;
