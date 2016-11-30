@@ -11,8 +11,9 @@ class OLSR
     public:
         OLSR();
         ~OLSR();
-		void pushNodes(int num);
-		int getNumOfNodes();
+		
+	void pushNodes(int num);
+	int getNumOfNodes();
         void broadcastHello(Node* node);
         void topologyControl();
         Node* getNode(int index);

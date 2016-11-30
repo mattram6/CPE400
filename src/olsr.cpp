@@ -110,3 +110,37 @@ void OLSR::topologyControl()
     }
 
 }
+/*
+Route findRoute(Node* prev, Node* src, Node* dest)
+{
+	static Route routeBuild;
+	static int sequence = 0;
+	if(src->isOneHopNeighbor(dest))
+	{
+		routeBuild.setDestMPR(src);
+		routeBuild.setDestAddress(dest);
+		
+	}
+	else
+	{
+		for(int i = 0; i < src->getOneHopNeighborNum(); i++)
+		{
+			if(src->getOneHopNeighbor(i).getMPR())
+			{
+				findRoute(src->getOneHopNeighbor(i), dest);
+			}
+		}
+	}
+}
+
+void OLSR::createRoutingTable(Node* node)
+{
+	for(int i = 0; i < network.size(); i++)
+	{
+		if(network[i] != node && !(node->isOneHopNeighbor(network[i])))
+		{
+			node->pushRoute(findRoute(NULL, node, network[i]));
+		}
+	}
+}
+*/
