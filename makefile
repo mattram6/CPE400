@@ -18,7 +18,7 @@ endif
 CXXFLAGS=-g -Wall -std=c++0x
 
 # .o Compilation
-O_FILES=main.o node.o olsr.o
+O_FILES=main.o node.o olsr.o route.o
 
 # Point to includes of local directories
 INDLUDES=-I../include
@@ -35,6 +35,9 @@ node.o: src/node.cpp
 
 olsr.o: src/olsr.cpp
 	$(CC) $(CXXFLAGS) -c src/olsr.cpp -o olsr.o $(INDLUDES)
+
+route.o: src/route.cpp
+	$(CC) $(CXXFLAGS) -c src/route.cpp -o route.o $(INDLUDES)
 
 clean:
 	-@if rm *.o Tutorial 2>/dev/null || true; then echo "Clean"; else echo "No Main"; fi

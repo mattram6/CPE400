@@ -1,7 +1,9 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "../include/route.h"
 #include <vector>
+
 using namespace std;
 class Node
 {
@@ -14,7 +16,7 @@ class Node
 
         vector<Node*> getOneHopNeighbors();
         vector<Node*> getTwoHopNeighbors();
-
+		void buildRoutingTable();
         void addOneHopNeighbor(Node* neighbor);
         Node* getOneHopNeighbor(int index);
         int getOneHopNeighborNum();
@@ -31,6 +33,7 @@ class Node
         vector<Node*> oneHopNeighbor;
         vector<Node*> twoHopNeighbor;
         bool MPR;
+		vector<Route> routingTable;
 };
 
 #endif /* NODE_H */

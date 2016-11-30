@@ -68,7 +68,6 @@ void OLSR::broadcastHello(Node* node)
 				}
                 else
 				{
-					cout << j << "  " << k << endl;
 					node -> addTwoHopNeighbor(currentNeighbor -> getOneHopNeighbor(j));
 					break;
 				}

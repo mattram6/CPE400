@@ -110,3 +110,8 @@ bool Node::neighboringMPR()
     }
     return neighboringMPR;
 }
+
+void Node::buildRoutingTable()
+{
+	//routingTable
+}
