@@ -13,9 +13,9 @@ class OLSR
         ~OLSR();
 		void pushNodes(int num);
 		int getNumOfNodes();
-        void broadcastHello(int nodeID);
+        void broadcastHello(Node* node);
     private:
-        vector<Node> network;
+        vector<Node*> network;
 };
 
 #endif /* OLSR_H */

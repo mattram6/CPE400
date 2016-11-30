@@ -8,8 +8,14 @@ class Node
     public:
         Node();
         ~Node();
+
+        vector<Node*> getOneHopNeighbors();
+        void addOneHopNeighbor(Node* neighbor);
+        Node* getOneHopNeighbor(int index);
+        int getOneHopNeighborNum();
     private:
         int energy;
+        int nodeID;
         vector<Node*> oneHopNeighbor;
         vector<Node*> twoHopNeighbor;
         bool MPR;

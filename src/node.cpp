@@ -5,6 +5,7 @@ Node::Node()
 {
     energy = 100;
 	MPR = false;
+    oneHopNeighbor.clear();
 }
 
 //Deletes vector objects and frees the memory allocated
@@ -22,4 +23,24 @@ Node::~Node()
 	oneHopNeighbor.shrink_to_fit();
 	twoHopNeighbor.clear();
 	twoHopNeighbor.shrink_to_fit();
+}
+
+void Node::addOneHopNeighbor(Node* neighbor)
+{
+    oneHopNeighbor.push_back(neighbor);
+}
+
+int Node::getOneHopNeighborNum()
+{
+    return oneHopNeighbor.size();
+}
+
+Node* Node::getOneHopNeighbor(int index)
+{
+    return oneHopNeighbor[index];
+}
+
+vector<Node*> Node::getOneHopNeighbors()
+{
+    return oneHopNeighbor;
 }
