@@ -18,6 +18,7 @@ class OLSR
         void topologyControl();
         Node* getNode(int index);
         void createRoutingTable(Node* node);
+        Route findRoute(Node* prev, Node* src, Node* dest);
     private:
         vector<Node*> network;
 };

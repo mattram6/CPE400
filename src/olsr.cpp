@@ -100,10 +100,17 @@ void OLSR::topologyControl()
         {
             if(network[i]->getOneHopNeighborNum() == counter)
             {
-                if(!(network[i]->neighboringMPR()))
+                for(int j = 0; j < network[i]->getOneHopNeighborNum(); j++)
+                {
+                    if(!network[i]->getOneHopNeighbor(j)->neighboringMPR())
+                    {
+                        network[i]->setMPR(true);
+                    }
+                }
+                /*if(!(network[i]->neighboringMPR()) || )
                 {
                     network[i]->setMPR(true);
-                }
+                }*/
             }
         }
         counter--;
@@ -111,7 +118,7 @@ void OLSR::topologyControl()
 
 }
 
-Route findRoute(Node* prev, Node* src, Node* dest)
+Route OLSR::findRoute(Node* prev, Node* src, Node* dest)
 {
 	static Route routeBuild;
 	static int sequence = 0;
@@ -130,12 +137,12 @@ Route findRoute(Node* prev, Node* src, Node* dest)
 			{
 				findRoute(src, src->getOneHopNeighbor(i), dest);
 			}
-            if(src->isOneHopNeighbor(dest))
+            /*if(src->getOneHopNeighbor(i)->isOneHopNeighbor(dest))
             {
-                routeBuild.setDestMPR(src);
+                routeBuild.setDestMPR(src-);
 		        routeBuild.setDestAddress(dest);
                 cout  << "Dest Address - " << routeBuild.getDestAddress()->getNodeID() << "| DestMPR: " << routeBuild.getDestMPR()->getNodeID() << endl; 
-            }
+            }*/
 		}
 	}
     return routeBuild;
