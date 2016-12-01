@@ -1,6 +1,8 @@
 #ifndef ROUTE_H
 #define ROUTE_H
 
+#include "../include/node.h"
+
 using namespace std;
 
 class Route
@@ -9,16 +11,16 @@ class Route
 		Route();
 		~Route();
 
-		void setDestAddress(int address);
-		void setDestMPR( int nodeMPR);
+		void setDestAddress(Node* address);
+		void setDestMPR( Node* nodeMPR);
 		void setMPRSequence( int sequenceNum );
-		int getDestAddress();
-		int getDestMPR();
+		Node* getDestAddress();
+		Node* getDestMPR();
 		int getMPRSequence();
 
 	private:
-		int destAddress;
-		int destMPR;
+	    Node* destAddress;
+		Node* destMPR;
 		int MPRSequence;
 };
 

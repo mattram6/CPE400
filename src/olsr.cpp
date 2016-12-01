@@ -96,7 +96,7 @@ void OLSR::topologyControl()
     int counter = 4;
     while(counter > 0)
     {
-        for(int i = 0; i < network.size(); i++)
+        for(unsigned int i = 0; i < network.size(); i++)
         {
             if(network[i]->getOneHopNeighborNum() == counter)
             {
@@ -110,7 +110,7 @@ void OLSR::topologyControl()
     }
 
 }
-/*
+
 Route findRoute(Node* prev, Node* src, Node* dest)
 {
 	static Route routeBuild;
@@ -119,28 +119,36 @@ Route findRoute(Node* prev, Node* src, Node* dest)
 	{
 		routeBuild.setDestMPR(src);
 		routeBuild.setDestAddress(dest);
+        cout  << "Dest Address - " << routeBuild.getDestAddress()->getNodeID() << "| DestMPR: " << routeBuild.getDestMPR()->getNodeID() << endl; 
 		
 	}
 	else
 	{
 		for(int i = 0; i < src->getOneHopNeighborNum(); i++)
 		{
-			if(src->getOneHopNeighbor(i).getMPR())
+			if(src->getOneHopNeighbor(i)->getMPR())
 			{
-				findRoute(src->getOneHopNeighbor(i), dest);
+				findRoute(src, src->getOneHopNeighbor(i), dest);
 			}
+            if(src->isOneHopNeighbor(dest))
+            {
+                routeBuild.setDestMPR(src);
+		        routeBuild.setDestAddress(dest);
+                cout  << "Dest Address - " << routeBuild.getDestAddress()->getNodeID() << "| DestMPR: " << routeBuild.getDestMPR()->getNodeID() << endl; 
+            }
 		}
 	}
+    return routeBuild;
 }
 
 void OLSR::createRoutingTable(Node* node)
 {
-	for(int i = 0; i < network.size(); i++)
+	for(unsigned int i = 0; i < network.size(); i++)
 	{
 		if(network[i] != node && !(node->isOneHopNeighbor(network[i])))
 		{
+            cout << "Node " << node->getNodeID() << " RoutingTable to: " << network[i]->getNodeID() << endl;
 			node->pushRoute(findRoute(NULL, node, network[i]));
 		}
 	}
 }
-*/

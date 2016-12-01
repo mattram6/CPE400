@@ -1,10 +1,10 @@
-#include "../include/route.h"
+#include "../include/node.h"
 #include <iostream>
 
 Route::Route()
 {
-	destAddress = 0;
-	destMPR = 0;
+	destAddress = NULL;
+	destMPR = NULL;
 	MPRSequence = 0;
 }
 
@@ -13,12 +13,12 @@ Route::~Route()
 
 }
 
-void Route::setDestAddress(int address)
+void Route::setDestAddress(Node* address)
 {
 	destAddress = address;
 }
 
-void Route::setDestMPR( int nodeMPR)
+void Route::setDestMPR( Node* nodeMPR)
 {
 	destMPR = nodeMPR;
 }
@@ -27,12 +27,12 @@ void Route::setMPRSequence( int sequenceNum )
 	MPRSequence = sequenceNum;
 }
 
-int Route::getDestAddress()
+Node* Route::getDestAddress()
 {
 	return destAddress;
 }
 
-int Route::getDestMPR()
+Node* Route::getDestMPR()
 {
 	return destMPR;
 }

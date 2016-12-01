@@ -111,7 +111,19 @@ bool Node::neighboringMPR()
     return neighboringMPR;
 }
 
-void Node::buildRoutingTable()
+bool Node::isOneHopNeighbor(Node* node)
 {
-	//routingTable
+    for(unsigned int i = 0; i < oneHopNeighbor.size(); i++)
+    {
+        if(node == oneHopNeighbor[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Node::pushRoute(Route route)
+{
+    routingTable.push_back(route);
 }

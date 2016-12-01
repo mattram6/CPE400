@@ -40,9 +40,10 @@ int main()
     // Debugging
     for(int i = 0; i < myNetwork->getNumOfNodes(); i++)
     {
-        cout << endl << "Node " << i << ": " << myNetwork->getNode(i)->getMPR() << endl;
+        myNetwork->createRoutingTable(myNetwork->getNode(i));
+        //cout << endl << "Node " << i << ": " << myNetwork->getNode(i)->getMPR() << endl;
     }
-    //myNetwork->createRoutingTable();
+    
 
     /*while(engine == good)
     {
