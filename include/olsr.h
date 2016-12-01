@@ -19,6 +19,7 @@ class OLSR
         Node* getNode(int index);
         void createRoutingTable(Node* node);
         Route findRoute(Node* prev, Node* src, Node* dest, int seqNum);
+        bool sendPacket(int src, int dest);
     private:
         vector<Node*> network;
 };

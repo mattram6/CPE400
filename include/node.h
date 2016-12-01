@@ -48,6 +48,9 @@ class Node
         bool getMPR();
         bool neighboringMPR();
 	    void pushRoute(Route route);
+        void printRoute(int routeNum);
+        Route getRoute(int routeNum);
+        int getTableSize();
 
     private:
         int energy;

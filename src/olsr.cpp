@@ -147,3 +147,16 @@ void OLSR::createRoutingTable(Node* node)
 		}
 	}
 }
+
+bool OLSR::sendPacket(int srcID, int destID)
+{
+    Node* src = network[srcID];
+    Node* dest = network[destID];
+
+    for(int i = 0; i < network[srcID]->getTableSize(); i++)
+    {
+    }
+
+    return true;    
+
+}
