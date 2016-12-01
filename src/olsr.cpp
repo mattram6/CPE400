@@ -16,9 +16,6 @@ OLSR::OLSR()
     network[3]->addOneHopNeighbor(network[2]);
     network[3]->addOneHopNeighbor(network[4]);
     network[4]->addOneHopNeighbor(network[3]);
-	
-    //routing table
-
 }
 
 //Deletes vector object and frees the memory allocated
@@ -107,10 +104,6 @@ void OLSR::topologyControl()
                         network[i]->setMPR(true);
                     }
                 }
-                /*if(!(network[i]->neighboringMPR()) || )
-                {
-                    network[i]->setMPR(true);
-                }*/
             }
         }
         counter--;
@@ -118,15 +111,15 @@ void OLSR::topologyControl()
 
 }
 
-Route OLSR::findRoute(Node* prev, Node* src, Node* dest)
+Route OLSR::findRoute(Node* prev, Node* src, Node* dest, int seqNum)
 {
 	static Route routeBuild;
-	static int sequence = 0;
 	if(src->isOneHopNeighbor(dest))
 	{
 		routeBuild.setDestMPR(src);
 		routeBuild.setDestAddress(dest);
-        cout  << "Dest Address - " << routeBuild.getDestAddress()->getNodeID() << "| DestMPR: " << routeBuild.getDestMPR()->getNodeID() << endl; 
+        routeBuild.setMPRSequence(seqNum);
+        cout  << "Dest Address - " << routeBuild.getDestAddress()->getNodeID() << "| DestMPR: " << routeBuild.getDestMPR()->getNodeID() << "| MPRSeq: " << routeBuild.getMPRSequence() << endl; 
 		
 	}
 	else
@@ -135,14 +128,9 @@ Route OLSR::findRoute(Node* prev, Node* src, Node* dest)
 		{
 			if(src->getOneHopNeighbor(i)->getMPR())
 			{
-				findRoute(src, src->getOneHopNeighbor(i), dest);
+                seqNum++;
+				findRoute(src, src->getOneHopNeighbor(i), dest, seqNum);
 			}
-            /*if(src->getOneHopNeighbor(i)->isOneHopNeighbor(dest))
-            {
-                routeBuild.setDestMPR(src-);
-		        routeBuild.setDestAddress(dest);
-                cout  << "Dest Address - " << routeBuild.getDestAddress()->getNodeID() << "| DestMPR: " << routeBuild.getDestMPR()->getNodeID() << endl; 
-            }*/
 		}
 	}
     return routeBuild;
@@ -155,7 +143,7 @@ void OLSR::createRoutingTable(Node* node)
 		if(network[i] != node && !(node->isOneHopNeighbor(network[i])))
 		{
             cout << "Node " << node->getNodeID() << " RoutingTable to: " << network[i]->getNodeID() << endl;
-			node->pushRoute(findRoute(NULL, node, network[i]));
+			node->pushRoute(findRoute(NULL, node, network[i], 0));
 		}
 	}
 }
