@@ -35,6 +35,7 @@ int main()
 		cout << endl;
 	}
 
+	
     myNetwork->topologyControl();
     
     // Debugging
@@ -42,9 +43,9 @@ int main()
     {
         myNetwork->createRoutingTable(myNetwork->getNode(i));
         //cout << endl << "Node " << i << ": " << myNetwork->getNode(i)->getMPR() << endl;
-    }
-    
-
+    } 
+	cout << endl << "Packet sending from Node 1 to Node 4:" << endl;
+	myNetwork->sendPacket(1, 4);
     /*while(engine == good)
     {
         cin << control;

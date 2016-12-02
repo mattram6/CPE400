@@ -49,6 +49,7 @@ class Node
         bool neighboringMPR();
 	    void pushRoute(Route route);
         void printRoute(int routeNum);
+		vector<Route> getRoutingTable();
         Route getRoute(int routeNum);
         int getTableSize();
 

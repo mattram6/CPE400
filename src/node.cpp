@@ -144,3 +144,8 @@ int Node::getTableSize()
 {
     return routingTable.size();
 }
+
+vector<Route> Node::getRoutingTable()
+{
+	return routingTable;
+}

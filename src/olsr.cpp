@@ -152,11 +152,23 @@ bool OLSR::sendPacket(int srcID, int destID)
 {
     Node* src = network[srcID];
     Node* dest = network[destID];
-
-    for(int i = 0; i < network[srcID]->getTableSize(); i++)
+	Node* destMPR;
+	Route currentRoute;
+	if( src -> isOneHopNeighbor(dest) )
+	{
+		cout << "Node " << srcID << " to " << destID << endl;
+		return true;
+	}
+    for(int i = 0; i < src->getTableSize(); i++)
     {
+		if( src -> getRoute(i).getDestAddress() == dest )
+		{
+			currentRoute = src->getRoute(i);
+			destMPR = currentRoute.getDestMPR();
+			sendPacket(srcID, destMPR->getNodeID());
+			cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
+		}
     }
-
-    return true;    
-
+	return false;
 }
+
