@@ -5,17 +5,34 @@ using namespace std;
 
 OLSR::OLSR()
 {
-	pushNodes(5);
+	pushNodes(12);
     network[0]->addOneHopNeighbor(network[1]);
     network[0]->addOneHopNeighbor(network[3]);
+    network[0]->addOneHopNeighbor(network[5]);
     network[1]->addOneHopNeighbor(network[0]);
     network[1]->addOneHopNeighbor(network[2]);
+    network[1]->addOneHopNeighbor(network[9]);
     network[2]->addOneHopNeighbor(network[1]);
     network[2]->addOneHopNeighbor(network[3]);
     network[3]->addOneHopNeighbor(network[0]);
     network[3]->addOneHopNeighbor(network[2]);
     network[3]->addOneHopNeighbor(network[4]);
     network[4]->addOneHopNeighbor(network[3]);
+    network[4]->addOneHopNeighbor(network[7]);
+    network[5]->addOneHopNeighbor(network[0]);
+    network[5]->addOneHopNeighbor(network[6]);
+    network[6]->addOneHopNeighbor(network[5]);
+    network[6]->addOneHopNeighbor(network[7]);
+    network[7]->addOneHopNeighbor(network[4]);
+    network[7]->addOneHopNeighbor(network[6]);
+    network[7]->addOneHopNeighbor(network[8]);
+    network[8]->addOneHopNeighbor(network[7]);
+    network[9]->addOneHopNeighbor(network[1]);
+    network[9]->addOneHopNeighbor(network[10]);
+    network[10]->addOneHopNeighbor(network[9]);
+    network[10]->addOneHopNeighbor(network[11]);
+    network[11]->addOneHopNeighbor(network[10]);
+
 }
 
 //Deletes vector object and frees the memory allocated
@@ -86,6 +103,7 @@ void OLSR::topologyControl()
     {
         if(network[i]->getOneHopNeighborNum() == 1)
         {
+			cout << "Node " << network[i]->getOneHopNeighbor(0) -> getNodeID() << " is a MPR" << endl;
             network[i]->getOneHopNeighbor(0)->setMPR(true);
         }
     }
@@ -99,11 +117,25 @@ void OLSR::topologyControl()
             {
                 for(int j = 0; j < network[i]->getOneHopNeighborNum(); j++)
                 {
-                    if(!network[i]->getOneHopNeighbor(j)->neighboringMPR())
+                    if((!network[i]->getOneHopNeighbor(j)->neighboringMPR()))
                     {
+						cout << "Node " << network[i] -> getNodeID() << " is a MPR" << endl;
                         network[i]->setMPR(true);
+						break;
                     }
                 }
+				if(!network[i]->getMPR())
+				{
+					for( int k = 0; k < network[i]->getTwoHopNeighborNum(); k++ )
+					{
+						if((!network[i]->getTwoHopNeighbor(k)->neighboringMPR()))
+						{
+							cout << "Node " << network[i] -> getNodeID() << " is a MPR" << endl;
+		                    network[i]->setMPR(true);
+							break;
+						}
+					}
+				}
             }
         }
         counter--;
@@ -126,7 +158,7 @@ Route OLSR::findRoute(Node* prev, Node* src, Node* dest, int seqNum)
 	{
 		for(int i = 0; i < src->getOneHopNeighborNum(); i++)
 		{
-			if(src->getOneHopNeighbor(i)->getMPR())
+			if(src->getOneHopNeighbor(i)->getMPR() && src->getOneHopNeighbor(i) != prev)
 			{
                 seqNum++;
 				findRoute(src, src->getOneHopNeighbor(i), dest, seqNum);

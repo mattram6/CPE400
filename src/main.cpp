@@ -44,8 +44,8 @@ int main()
         myNetwork->createRoutingTable(myNetwork->getNode(i));
         //cout << endl << "Node " << i << ": " << myNetwork->getNode(i)->getMPR() << endl;
     } 
-	cout << endl << "Packet sending from Node 1 to Node 4:" << endl;
-	myNetwork->sendPacket(1, 4);
+	cout << endl << "Packet sending from Node 11 to Node 8:" << endl;
+	myNetwork->sendPacket(2, 11);
     /*while(engine == good)
     {
         cin << control;
