@@ -58,6 +58,7 @@ int OLSR::getNumOfNodes()
 	return network.size();
 }
 
+// Prints out the current power of each node in the network
 void OLSR::checkNetworkPower()
 {
 	cout << "Remaining energy in the network" << endl;
@@ -74,7 +75,7 @@ void OLSR::broadcastHello(Node* node)
     for(int i = 0; i < node->getOneHopNeighborNum(); i++)
     {
         Node *currentNeighbor = node -> getOneHopNeighbor(i);
-        for(int j = 0; j < currentNeighbor -> getOneHopNeighborNum(); j++)
+        for(int j = 0; j < currentNeighbor -> getOneHopNeighborNum(); j++) 
         {
 			for(int k = 0; k < node -> getOneHopNeighborNum(); k++)
             {
@@ -107,6 +108,7 @@ Node* OLSR::getNode(int index)
     return network[index];
 }
 
+// Determine which nodes need to be MPRs and set them
 void OLSR::topologyControl()
 {
     for(int i = 0; i < getNumOfNodes(); i++)
@@ -153,6 +155,7 @@ void OLSR::topologyControl()
 
 }
 
+// Finds and sets a route in the routing table from one node to another
 bool OLSR::findRoute(Node* origin, Node* prev, Node* src, Node* dest, int seqNum)
 {
 	static Route routeBuild;
@@ -198,6 +201,7 @@ bool OLSR::findRoute(Node* origin, Node* prev, Node* src, Node* dest, int seqNum
     return true;
 }
 
+// Prints out the routing table
 void OLSR::printRoutingTable()
 {
     for(unsigned int i = 0; i < network.size(); i++)
@@ -209,7 +213,8 @@ void OLSR::printRoutingTable()
         }
     }
 }
-            
+
+// Send a packet from a source node to a destination (no energy constraint)            
 bool OLSR::sendPacket(int srcID, int destID)
 {
     Node* src = network[srcID];
@@ -240,6 +245,7 @@ bool OLSR::sendPacket(int srcID, int destID)
 	return false;
 }
 
+// Send a packet from a source node to a destination (with energy constraint)
 bool OLSR::sendPacketEnergy(int srcID, int destID)
 {
     Node* src = network[srcID];
@@ -283,6 +289,7 @@ bool OLSR::sendPacketEnergy(int srcID, int destID)
 	return false;
 }
 
+// Checks to see if any nodes have died and handles them accordingly
 bool OLSR::checkNodes()
 {
     for(int i = 0; i < getNumOfNodes(); i++)

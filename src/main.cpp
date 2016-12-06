@@ -14,6 +14,8 @@ int main()
     {
         myNetwork->broadcastHello(myNetwork->getNode(p));
     }
+
+    /*
 	cout << "1 Hop Neighbors of Network" << endl << endl;
 	for(int x = 0; x < myNetwork->getNumOfNodes(); x++)
 	{
@@ -36,7 +38,7 @@ int main()
 		}
 		cout << endl;
 	}
-
+    */
 	
     myNetwork->topologyControl();
     
@@ -53,7 +55,7 @@ int main()
     }
 
     // Print routing table
-    myNetwork->printRoutingTable();
+    //myNetwork->printRoutingTable();
    
 	for(int i = 0; i < 120; i++)
     {
