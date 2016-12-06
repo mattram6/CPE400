@@ -26,7 +26,6 @@ Node::~Node()
 	twoHopNeighbor.shrink_to_fit();
 }
 
-
 // 1 Hop 
 
 void Node::addOneHopNeighbor(Node* neighbor)
@@ -148,4 +147,14 @@ int Node::getTableSize()
 vector<Route> Node::getRoutingTable()
 {
 	return routingTable;
+}
+
+int Node::getEnergy()
+{
+	return energy;
+}
+
+void Node::losePower()
+{
+	energy--;
 }

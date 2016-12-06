@@ -52,6 +52,8 @@ class Node
 		vector<Route> getRoutingTable();
         Route getRoute(int routeNum);
         int getTableSize();
+		int getEnergy();
+		void losePower();
 
     private:
         int energy;

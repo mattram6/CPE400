@@ -58,6 +58,16 @@ int OLSR::getNumOfNodes()
 	return network.size();
 }
 
+void OLSR::checkNetworkPower()
+{
+	cout << "Remaining energy in the network" << endl;
+	for(int i = 0; i < getNumOfNodes(); i++ )
+	{
+		cout << "Node " << i << ": " << network[i]->getEnergy() << endl;
+	}
+	cout << endl;
+}
+
 //Sets up 2 Hop Neighbor Table
 void OLSR::broadcastHello(Node* node)
 {
@@ -197,6 +207,7 @@ bool OLSR::sendPacket(int srcID, int destID)
 		{
 			currentRoute = src->getRoute(i);
 			destMPR = currentRoute.getDestMPR();
+			dest -> losePower();
 			sendPacket(srcID, destMPR->getNodeID());
 			cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
 		}

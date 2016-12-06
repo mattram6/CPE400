@@ -45,7 +45,8 @@ int main()
         //cout << endl << "Node " << i << ": " << myNetwork->getNode(i)->getMPR() << endl;
     } 
 	cout << endl << "Packet sending from Node 11 to Node 8:" << endl;
-	myNetwork->sendPacket(2, 11);
+	myNetwork->sendPacket(11, 8);
+	myNetwork->checkNetworkPower();
     /*while(engine == good)
     {
         cin << control;

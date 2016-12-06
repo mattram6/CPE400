@@ -20,6 +20,7 @@ class OLSR
         void createRoutingTable(Node* node);
         Route findRoute(Node* prev, Node* src, Node* dest, int seqNum);
         bool sendPacket(int src, int dest);
+		void checkNetworkPower();
     private:
         vector<Node*> network;
 };
