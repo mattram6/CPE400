@@ -17,10 +17,12 @@ class OLSR
         void broadcastHello(Node* node);
         void topologyControl();
         Node* getNode(int index);
-        void createRoutingTable(Node* node);
-        Route findRoute(Node* prev, Node* src, Node* dest, int seqNum);
+        bool findRoute(Node* origin, Node* prev, Node* src, Node* dest, int seqNum);
         bool sendPacket(int src, int dest);
+        bool sendPacketEnergy(int src, int dest);
 		void checkNetworkPower();
+        void printRoutingTable();
+        bool checkNodes();
     private:
         vector<Node*> network;
 };

@@ -127,13 +127,6 @@ void Node::pushRoute(Route route)
     routingTable.push_back(route);
 }
 
-void Node::printRoute(int routeNum)
-{
-    cout << "Dest Address: " << routingTable[routeNum].getDestAddress()->getNodeID() 
-         << " | Dest MPR: " << routingTable[routeNum].getDestMPR()->getNodeID() 
-         << " | MPR Sequence Num: " << routingTable[routeNum].getMPRSequence() << endl;
-}
-
 Route Node::getRoute(int routeNum)
 {
     return routingTable[routeNum];
@@ -157,4 +150,32 @@ int Node::getEnergy()
 void Node::losePower()
 {
 	energy--;
+}
+
+void Node::removeRoute(int index)
+{
+    routingTable.erase(routingTable.begin() + index);
+}
+
+void Node::removeOneHopNeighbor(Node *node)
+{
+    for(unsigned int i = 0; i < oneHopNeighbor.size(); i++)
+    {
+        if(node == oneHopNeighbor[i])
+        {
+            oneHopNeighbor.erase(oneHopNeighbor.begin() + i);
+        }
+    }
+}
+
+void Node::clearTwoHop()
+{
+    twoHopNeighbor.clear();
+    twoHopNeighbor.shrink_to_fit();
+}
+
+void Node::clearRoutingTable()
+{
+    routingTable.clear();
+    routingTable.shrink_to_fit();
 }

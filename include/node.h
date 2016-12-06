@@ -1,7 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
 
-//#include "../include/route.h"
 #include <vector>
 
 using namespace std;
@@ -40,6 +39,7 @@ class Node
         vector<Node*> getTwoHopNeighbors();
         void addOneHopNeighbor(Node* neighbor);
         Node* getOneHopNeighbor(int index);
+        void removeOneHopNeighbor(Node *node);
         int getOneHopNeighborNum();
 	    void addTwoHopNeighbor(Node* neighbor);
         Node* getTwoHopNeighbor(int index);
@@ -48,12 +48,14 @@ class Node
         bool getMPR();
         bool neighboringMPR();
 	    void pushRoute(Route route);
-        void printRoute(int routeNum);
 		vector<Route> getRoutingTable();
         Route getRoute(int routeNum);
         int getTableSize();
 		int getEnergy();
 		void losePower();
+        void removeRoute(int index);
+        void clearTwoHop();
+        void clearRoutingTable();
 
     private:
         int energy;

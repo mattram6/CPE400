@@ -63,7 +63,7 @@ void OLSR::checkNetworkPower()
 	cout << "Remaining energy in the network" << endl;
 	for(int i = 0; i < getNumOfNodes(); i++ )
 	{
-		cout << "Node " << i << ": " << network[i]->getEnergy() << endl;
+		cout << "Node " << network[i]->getNodeID() << ": " << network[i]->getEnergy() << endl;
 	}
 	cout << endl;
 }
@@ -153,16 +153,31 @@ void OLSR::topologyControl()
 
 }
 
-Route OLSR::findRoute(Node* prev, Node* src, Node* dest, int seqNum)
+bool OLSR::findRoute(Node* origin, Node* prev, Node* src, Node* dest, int seqNum)
 {
 	static Route routeBuild;
+    bool found = false;
+
 	if(src->isOneHopNeighbor(dest))
 	{
 		routeBuild.setDestMPR(src);
 		routeBuild.setDestAddress(dest);
         routeBuild.setMPRSequence(seqNum);
-        cout  << "Dest Address - " << routeBuild.getDestAddress()->getNodeID() << "| DestMPR: " << routeBuild.getDestMPR()->getNodeID() << "| MPRSeq: " << routeBuild.getMPRSequence() << endl; 
-		
+        for(int i = 0; i < origin->getTableSize(); i++)
+        {
+            if(routeBuild.getDestMPR() == origin->getRoute(i).getDestMPR() && routeBuild.getDestAddress() == origin->getRoute(i).getDestAddress())
+            {
+                if(routeBuild.getMPRSequence() >= origin->getRoute(i).getMPRSequence())
+                {
+                    return false;
+                }
+                if(routeBuild.getMPRSequence() < origin->getRoute(i).getMPRSequence())
+                {
+                    origin->removeRoute(i);
+                }
+            }
+        }
+    origin->pushRoute(routeBuild);		
 	}
 	else
 	{
@@ -170,35 +185,43 @@ Route OLSR::findRoute(Node* prev, Node* src, Node* dest, int seqNum)
 		{
 			if(src->getOneHopNeighbor(i)->getMPR() && src->getOneHopNeighbor(i) != prev)
 			{
+                if(found)
+                {
+                    seqNum--;
+                }
                 seqNum++;
-				findRoute(src, src->getOneHopNeighbor(i), dest, seqNum);
+                found = true;
+				findRoute(origin, src, src->getOneHopNeighbor(i), dest, seqNum);
 			}
 		}
 	}
-    return routeBuild;
+    return true;
 }
 
-void OLSR::createRoutingTable(Node* node)
+void OLSR::printRoutingTable()
 {
-	for(unsigned int i = 0; i < network.size(); i++)
-	{
-		if(network[i] != node && !(node->isOneHopNeighbor(network[i])))
-		{
-            cout << "Node " << node->getNodeID() << " RoutingTable to: " << network[i]->getNodeID() << endl;
-			node->pushRoute(findRoute(NULL, node, network[i], 0));
-		}
-	}
+    for(unsigned int i = 0; i < network.size(); i++)
+    {
+        cout << "Node " << network[i]->getNodeID() << " RoutingTable" << endl;
+        for(int j = 0; j < network[i]->getTableSize(); j++)
+        {
+            cout  << "Dest Address - " << network[i]->getRoute(j).getDestAddress()->getNodeID() << "| DestMPR: " << network[i]->getRoute(j).getDestMPR()->getNodeID() << "| MPRSeq: " << network[i]->getRoute(j).getMPRSequence() << endl;  
+        }
+    }
 }
-
+            
 bool OLSR::sendPacket(int srcID, int destID)
 {
     Node* src = network[srcID];
     Node* dest = network[destID];
 	Node* destMPR;
 	Route currentRoute;
+
 	if( src -> isOneHopNeighbor(dest) )
 	{
 		cout << "Node " << srcID << " to " << destID << endl;
+        src -> losePower();
+        dest -> losePower();
 		return true;
 	}
     for(int i = 0; i < src->getTableSize(); i++)
@@ -210,8 +233,75 @@ bool OLSR::sendPacket(int srcID, int destID)
 			dest -> losePower();
 			sendPacket(srcID, destMPR->getNodeID());
 			cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
+            break;
 		}
     }
+    checkNodes();
 	return false;
 }
 
+bool OLSR::sendPacketEnergy(int srcID, int destID)
+{
+    Node* src = network[srcID];
+    Node* dest = network[destID];
+	Node* destMPR;
+	Route currentRoute;
+
+	if( src -> isOneHopNeighbor(dest) )
+	{
+		cout << "Node " << srcID << " to " << destID << endl;
+        src -> losePower();
+        dest -> losePower();
+		return true;
+	}
+    for(int i = 0; i < src->getTableSize(); i++)
+    {
+		if( src -> getRoute(i).getDestAddress() == dest )
+		{
+			currentRoute = src->getRoute(i);
+			destMPR = currentRoute.getDestMPR();
+            if(destMPR->getEnergy() < 50)
+            {
+                vector<Route> tempTable = src->getRoutingTable();
+                tempTable.erase(tempTable.begin() + i);
+                for(unsigned int j = 0; j < tempTable.size(); j++)
+                {
+                    if(tempTable[j].getDestAddress() == dest && tempTable[j].getDestAddress()->getEnergy())
+                    {
+                        currentRoute = tempTable[j];
+                        destMPR = currentRoute.getDestMPR();
+                    }
+                }
+            }
+			dest -> losePower();
+			sendPacket(srcID, destMPR->getNodeID());
+			cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
+            break;
+		}
+    }
+    checkNodes();
+	return false;
+}
+
+bool OLSR::checkNodes()
+{
+    for(int i = 0; i < getNumOfNodes(); i++)
+    {
+        if(network[i]->getEnergy() <= 0)
+        {
+            for(int j = 0; j < getNumOfNodes(); j++)
+            {
+                if(network[j]->isOneHopNeighbor(network[i]))
+                {
+                    network[j]->removeOneHopNeighbor(network[i]);
+                }
+                network[j]->clearTwoHop();
+                network[j]->clearRoutingTable();
+            }
+            network.erase(network.begin() + i);
+            
+            return true;
+        }
+    }
+    return false;
+}

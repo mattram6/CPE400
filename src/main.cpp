@@ -3,6 +3,8 @@
 
 using namespace std;
 
+void update(OLSR *network);
+
 int main()
 {
     OLSR *myNetwork = new OLSR();
@@ -41,19 +43,47 @@ int main()
     // Debugging
     for(int i = 0; i < myNetwork->getNumOfNodes(); i++)
     {
-        myNetwork->createRoutingTable(myNetwork->getNode(i));
-        //cout << endl << "Node " << i << ": " << myNetwork->getNode(i)->getMPR() << endl;
-    } 
-	cout << endl << "Packet sending from Node 11 to Node 8:" << endl;
-	myNetwork->sendPacket(11, 8);
-	myNetwork->checkNetworkPower();
-    /*while(engine == good)
+        for(int j = 0; j < myNetwork->getNumOfNodes(); j++)
+        {
+            if(myNetwork->getNode(j) != myNetwork->getNode(i) && !(myNetwork->getNode(i)->isOneHopNeighbor(myNetwork->getNode(j))))
+		    {
+			    myNetwork->findRoute(myNetwork->getNode(i), NULL, myNetwork->getNode(i), myNetwork->getNode(j), 0);
+		    }
+        }
+    }
+
+    // Print routing table
+    myNetwork->printRoutingTable();
+   
+	for(int i = 0; i < 120; i++)
     {
-        cin << control;
-        myNetwork->sendMessage(Node1, Node2);
-        myNetwork->broadcastHello();
-        myNetwork->topologyControl();
-        myNetwork->createRoutingTable();
-    }*/
+        myNetwork->sendPacketEnergy(0, 2);
+        if(myNetwork->checkNodes())
+        {
+            update(myNetwork);
+        }
+    }
+    myNetwork->checkNetworkPower();
+    
     return 0;
+}
+
+void update(OLSR *network)
+{
+    for(int p = 0; p < network->getNumOfNodes(); p++)
+    {
+        network->broadcastHello(network->getNode(p));
+    }
+    network->topologyControl();
+
+    for(int i = 0; i < network->getNumOfNodes(); i++)
+    {
+        for(int j = 0; j < network->getNumOfNodes(); j++)
+        {
+            if(network->getNode(j) != network->getNode(i) && !(network->getNode(i)->isOneHopNeighbor(network->getNode(j))))
+		    {
+			    network->findRoute(network->getNode(i), NULL, network->getNode(i), network->getNode(j), 0);
+		    }
+        }
+    }
 }
