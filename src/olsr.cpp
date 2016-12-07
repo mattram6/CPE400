@@ -3,11 +3,9 @@
 
 using namespace std;
 
-OLSR::OLSR(bool networkSize)
+OLSR::OLSR()
 {
-    if(!networkSize)
-    {
-	    pushNodes(12);
+	pushNodes(12);
         network[0]->addOneHopNeighbor(network[1]);
         network[0]->addOneHopNeighbor(network[3]);
         network[0]->addOneHopNeighbor(network[5]);
@@ -34,105 +32,6 @@ OLSR::OLSR(bool networkSize)
         network[10]->addOneHopNeighbor(network[9]);
         network[10]->addOneHopNeighbor(network[11]);
         network[11]->addOneHopNeighbor(network[10]);
-    }
-    else
-    {
-        pushNodes(40);
-        network[0]->addOneHopNeighbor(network[1]);
-        network[0]->addOneHopNeighbor(network[3]);
-        network[0]->addOneHopNeighbor(network[12]);
-        network[1]->addOneHopNeighbor(network[0]);
-        network[1]->addOneHopNeighbor(network[9]);
-        network[2]->addOneHopNeighbor(network[3]);
-        network[2]->addOneHopNeighbor(network[39]);
-        network[3]->addOneHopNeighbor(network[0]);
-        network[3]->addOneHopNeighbor(network[2]);
-        network[3]->addOneHopNeighbor(network[4]);
-        network[4]->addOneHopNeighbor(network[3]);
-        network[4]->addOneHopNeighbor(network[7]);
-        network[4]->addOneHopNeighbor(network[33]);
-        network[5]->addOneHopNeighbor(network[6]);
-        network[5]->addOneHopNeighbor(network[17]);
-        network[6]->addOneHopNeighbor(network[5]);
-        network[6]->addOneHopNeighbor(network[7]);
-        network[7]->addOneHopNeighbor(network[4]);
-        network[7]->addOneHopNeighbor(network[6]);
-        network[7]->addOneHopNeighbor(network[8]);
-        network[8]->addOneHopNeighbor(network[7]);
-        network[8]->addOneHopNeighbor(network[29]);
-        network[9]->addOneHopNeighbor(network[1]);
-        network[9]->addOneHopNeighbor(network[10]);
-        network[10]->addOneHopNeighbor(network[9]);
-        network[10]->addOneHopNeighbor(network[11]);
-        network[11]->addOneHopNeighbor(network[10]);
-        network[12]->addOneHopNeighbor(network[0]);
-        network[12]->addOneHopNeighbor(network[13]);
-        network[12]->addOneHopNeighbor(network[17]);
-        network[13]->addOneHopNeighbor(network[12]);
-        network[13]->addOneHopNeighbor(network[14]);
-        network[13]->addOneHopNeighbor(network[15]);
-        network[13]->addOneHopNeighbor(network[16]);
-        network[14]->addOneHopNeighbor(network[13]);
-        network[14]->addOneHopNeighbor(network[15]);
-        network[15]->addOneHopNeighbor(network[13]);
-        network[15]->addOneHopNeighbor(network[14]);
-        network[15]->addOneHopNeighbor(network[16]);
-        network[16]->addOneHopNeighbor(network[13]);
-        network[16]->addOneHopNeighbor(network[15]);
-        network[17]->addOneHopNeighbor(network[5]);
-        network[17]->addOneHopNeighbor(network[12]);
-        network[17]->addOneHopNeighbor(network[18]);
-        network[18]->addOneHopNeighbor(network[17]);
-        network[18]->addOneHopNeighbor(network[19]);
-        network[18]->addOneHopNeighbor(network[23]);
-        network[19]->addOneHopNeighbor(network[18]);
-        network[19]->addOneHopNeighbor(network[20]);
-        network[19]->addOneHopNeighbor(network[21]);
-        network[19]->addOneHopNeighbor(network[22]);
-        network[20]->addOneHopNeighbor(network[19]);
-        network[21]->addOneHopNeighbor(network[19]);
-        network[22]->addOneHopNeighbor(network[19]);
-        network[23]->addOneHopNeighbor(network[18]);
-        network[23]->addOneHopNeighbor(network[24]);
-        network[23]->addOneHopNeighbor(network[25]);
-        network[23]->addOneHopNeighbor(network[26]);
-        network[24]->addOneHopNeighbor(network[23]);
-        network[25]->addOneHopNeighbor(network[23]);
-        network[25]->addOneHopNeighbor(network[26]);
-        network[26]->addOneHopNeighbor(network[23]);
-        network[26]->addOneHopNeighbor(network[25]);
-        network[26]->addOneHopNeighbor(network[27]);
-        network[27]->addOneHopNeighbor(network[26]);
-        network[27]->addOneHopNeighbor(network[28]);
-        network[28]->addOneHopNeighbor(network[27]);
-        network[28]->addOneHopNeighbor(network[29]);
-        network[28]->addOneHopNeighbor(network[30]);
-        network[28]->addOneHopNeighbor(network[31]);
-        network[29]->addOneHopNeighbor(network[8]);
-        network[29]->addOneHopNeighbor(network[28]);
-        network[30]->addOneHopNeighbor(network[28]);
-        network[31]->addOneHopNeighbor(network[28]);
-        network[31]->addOneHopNeighbor(network[32]);
-        network[32]->addOneHopNeighbor(network[31]);
-        network[32]->addOneHopNeighbor(network[33]);
-        network[33]->addOneHopNeighbor(network[4]);
-        network[33]->addOneHopNeighbor(network[32]);
-        network[33]->addOneHopNeighbor(network[34]);
-        network[34]->addOneHopNeighbor(network[33]);
-        network[34]->addOneHopNeighbor(network[35]);
-        network[34]->addOneHopNeighbor(network[37]);
-        network[35]->addOneHopNeighbor(network[34]);
-        network[35]->addOneHopNeighbor(network[36]);
-        network[36]->addOneHopNeighbor(network[35]);
-        network[36]->addOneHopNeighbor(network[37]);
-        network[37]->addOneHopNeighbor(network[34]);
-        network[37]->addOneHopNeighbor(network[36]);
-        network[37]->addOneHopNeighbor(network[38]);
-        network[38]->addOneHopNeighbor(network[37]);
-        network[38]->addOneHopNeighbor(network[39]);
-        network[39]->addOneHopNeighbor(network[2]);
-        network[39]->addOneHopNeighbor(network[38]);
-    }
 
 }
 
@@ -402,7 +301,7 @@ bool OLSR::sendPacketEnergy(int srcID, int destID)
 		}
     }
     checkNodes();
-	return valid;
+    return valid;
 }
 
 // Checks to see if any nodes have died and handles them accordingly

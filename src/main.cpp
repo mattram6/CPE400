@@ -4,18 +4,19 @@
 using namespace std;
 
 void update(OLSR *network);
-void testSmall(OLSR *network);
-void testSmallEnergy(OLSR *network);
-void testLarge(OLSR *network);
-void testLargeEnergy(OLSR *network);
+void test(OLSR *network);
+void testEnergy(OLSR *network);
 
 int main()
 {
-    bool size;
-    cout << "Select Network" << endl;
-    cout << "Enter 0 for small network or 1 for large network" << endl;
-    cin >> size;
-    OLSR *myNetwork = new OLSR(size);
+    int testNum;
+    cout << "Select Test" << endl;
+    cout << "Enter 1 for Test" << endl;
+    cout << "Enter 2 for TestEnergy" << endl;
+    cout << "Enter 3 to Print Routing Table" << endl;
+    cin >> testNum;
+
+    OLSR *myNetwork = new OLSR();
 
     // Build 2-Hop Neighbor Tables
     for(int p = 0; p < myNetwork->getNumOfNodes(); p++)
@@ -37,35 +38,19 @@ int main()
         }
     }
 
-    cout << "Select Test" << endl;
-    if(size)
+    if(testNum == 1)
     {
-        bool test;
-        cout << "Enter 0 for OLSR or 1 for OLSR with energy" << endl;
-        cin >> test;
-        if(test)
-        {
-	    testLargeEnergy(myNetwork);
-        }
-        if(!test)
-        {
-            testLarge(myNetwork);
-        }
+	test(myNetwork);
     }
-    if(!size)
+    if(testNum == 2)
     {
-        bool test;
-        cout << "Enter 0 for OLSR or 1 for OLSR with energy" << endl;
-        cin >> test;
-        if(test)
-        {
-	    testSmallEnergy(myNetwork);
-        }
-        if(!test)
-        {
-            testSmall(myNetwork);
-        }
+	testEnergy(myNetwork);
     }
+    if(testNum == 3)
+    {
+	myNetwork->printRoutingTable();
+    }
+   
     
     return 0;
 }
@@ -90,7 +75,7 @@ void update(OLSR *network)
     }
 }
 
-void testSmall(OLSR *network)
+void test(OLSR *network)
 {
     for(int i = 0; i < 3; i++)
     {
@@ -104,7 +89,7 @@ void testSmall(OLSR *network)
     }
 }    
 
-void testSmallEnergy(OLSR *network)
+void testEnergy(OLSR *network)
 {
     for(int i = 0; i < 3; i++)
     {
@@ -114,34 +99,6 @@ void testSmallEnergy(OLSR *network)
     for(int i = 0; i < 7; i++)
     {
         network->sendPacketEnergy(0, 2);
-        network->checkNetworkPower();
-    }
-}            
-
-void testLarge(OLSR *network)
-{
-    for(int i = 0; i < 5; i++)
-    {
-        network->sendPacket(3, 34);
-        network->checkNetworkPower();
-    }
-    for(int i = 0; i < 5; i++)
-    {
-        network->sendPacket(2, 34);
-        network->checkNetworkPower();
-    }
-}
-
-void testLargeEnergy(OLSR *network)
-{
-    for(int i = 0; i < 5; i++)
-    {
-        network->sendPacketEnergy(3, 34);
-        network->checkNetworkPower();
-    }
-    for(int i = 0; i < 5; i++)
-    {
-        network->sendPacket(2, 34);
         network->checkNetworkPower();
     }
 }
