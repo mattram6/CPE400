@@ -4,10 +4,15 @@
 using namespace std;
 
 void update(OLSR *network);
+bool test1();
+bool test1Energy();
 
 int main()
 {
-    OLSR *myNetwork = new OLSR();
+    bool size;
+    cout << "Press 0 for small network or 1 or greater for large network" << endl;
+    cin >> size;
+    OLSR *myNetwork = new OLSR(size);
 
     // Debugging
     for(int p = 0; p < myNetwork->getNumOfNodes(); p++)
@@ -89,3 +94,10 @@ void update(OLSR *network)
         }
     }
 }
+
+bool test1()
+{
+    //while(no error)
+    return true;
+}    
+        

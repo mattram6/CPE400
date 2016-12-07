@@ -9,7 +9,7 @@ using namespace std;
 class OLSR
 {
     public:
-        OLSR();
+        OLSR(bool networkSize);
         ~OLSR();
 		
 	    void pushNodes(int num);

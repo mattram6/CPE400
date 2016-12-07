@@ -3,35 +3,42 @@
 
 using namespace std;
 
-OLSR::OLSR()
+OLSR::OLSR(bool networkSize)
 {
-	pushNodes(12);
-    network[0]->addOneHopNeighbor(network[1]);
-    network[0]->addOneHopNeighbor(network[3]);
-    network[0]->addOneHopNeighbor(network[5]);
-    network[1]->addOneHopNeighbor(network[0]);
-    network[1]->addOneHopNeighbor(network[2]);
-    network[1]->addOneHopNeighbor(network[9]);
-    network[2]->addOneHopNeighbor(network[1]);
-    network[2]->addOneHopNeighbor(network[3]);
-    network[3]->addOneHopNeighbor(network[0]);
-    network[3]->addOneHopNeighbor(network[2]);
-    network[3]->addOneHopNeighbor(network[4]);
-    network[4]->addOneHopNeighbor(network[3]);
-    network[4]->addOneHopNeighbor(network[7]);
-    network[5]->addOneHopNeighbor(network[0]);
-    network[5]->addOneHopNeighbor(network[6]);
-    network[6]->addOneHopNeighbor(network[5]);
-    network[6]->addOneHopNeighbor(network[7]);
-    network[7]->addOneHopNeighbor(network[4]);
-    network[7]->addOneHopNeighbor(network[6]);
-    network[7]->addOneHopNeighbor(network[8]);
-    network[8]->addOneHopNeighbor(network[7]);
-    network[9]->addOneHopNeighbor(network[1]);
-    network[9]->addOneHopNeighbor(network[10]);
-    network[10]->addOneHopNeighbor(network[9]);
-    network[10]->addOneHopNeighbor(network[11]);
-    network[11]->addOneHopNeighbor(network[10]);
+    if(!networkSize)
+    {
+	    pushNodes(12);
+        network[0]->addOneHopNeighbor(network[1]);
+        network[0]->addOneHopNeighbor(network[3]);
+        network[0]->addOneHopNeighbor(network[5]);
+        network[1]->addOneHopNeighbor(network[0]);
+        network[1]->addOneHopNeighbor(network[2]);
+        network[1]->addOneHopNeighbor(network[9]);
+        network[2]->addOneHopNeighbor(network[1]);
+        network[2]->addOneHopNeighbor(network[3]);
+        network[3]->addOneHopNeighbor(network[0]);
+        network[3]->addOneHopNeighbor(network[2]);
+        network[3]->addOneHopNeighbor(network[4]);
+        network[4]->addOneHopNeighbor(network[3]);
+        network[4]->addOneHopNeighbor(network[7]);
+        network[5]->addOneHopNeighbor(network[0]);
+        network[5]->addOneHopNeighbor(network[6]);
+        network[6]->addOneHopNeighbor(network[5]);
+        network[6]->addOneHopNeighbor(network[7]);
+        network[7]->addOneHopNeighbor(network[4]);
+        network[7]->addOneHopNeighbor(network[6]);
+        network[7]->addOneHopNeighbor(network[8]);
+        network[8]->addOneHopNeighbor(network[7]);
+        network[9]->addOneHopNeighbor(network[1]);
+        network[9]->addOneHopNeighbor(network[10]);
+        network[10]->addOneHopNeighbor(network[9]);
+        network[10]->addOneHopNeighbor(network[11]);
+        network[11]->addOneHopNeighbor(network[10]);
+    }
+    else
+    {
+        cout << "large network" << endl;
+    }
 
 }
 
