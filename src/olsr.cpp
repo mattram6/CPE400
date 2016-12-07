@@ -214,12 +214,13 @@ void OLSR::printRoutingTable()
 // Send a packet from a source node to a destination (no energy constraint)            
 bool OLSR::sendPacket(int srcID, int destID)
 {
-    Node* src = network[srcID];
+     Node* src = network[srcID];
     Node* dest = network[destID];
-	Node* destMPR;
-	Route currentRoute;
+    Node* destMPR;
+    Route currentRoute;
+    Route fastestRoute;    
+    fastestRoute.setMPRSequence(35);
     bool valid = false;
-
     for(int i = 0; i < src->getTableSize(); i++)
     {
         if(dest == src->getRoute(i).getDestAddress())
@@ -228,27 +229,31 @@ bool OLSR::sendPacket(int srcID, int destID)
         }
     }
 
-	if( src -> isOneHopNeighbor(dest) )
-	{
-		cout << "Node " << srcID << " to " << destID << endl;
+
+    if( src -> isOneHopNeighbor(dest) )
+    {
+        cout << "Node " << srcID << " to " << destID << endl;
         src -> losePower();
         dest -> losePower();
-		return true;
-	}
+        return true;
+    }
     for(int i = 0; i < src->getTableSize(); i++)
     {
-		if( src -> getRoute(i).getDestAddress() == dest )
-		{
-			currentRoute = src->getRoute(i);
-			destMPR = currentRoute.getDestMPR();
-			dest -> losePower();
-			sendPacket(srcID, destMPR->getNodeID());
-			cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
-            break;
-		}
+        currentRoute = src->getRoute(i);
+        if( currentRoute.getDestAddress() == dest && fastestRoute.getMPRSequence() > currentRoute.getMPRSequence() )
+        {
+            fastestRoute = currentRoute;
+        }
     }
+    destMPR = fastestRoute.getDestMPR();
+    dest -> losePower();
+    sendPacket(srcID, destMPR->getNodeID());
+    cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
+
+
     checkNodes();
-	return valid;
+    return valid;
+
 }
 
 // Send a packet from a source node to a destination (with energy constraint)
@@ -256,9 +261,13 @@ bool OLSR::sendPacketEnergy(int srcID, int destID)
 {
     Node* src = network[srcID];
     Node* dest = network[destID];
-	Node* destMPR;
-	Route currentRoute;
+    Node* destMPR;
+    Route currentRoute;
+    Route fastestRoute;    
+    fastestRoute.setMPRSequence(35);
+    int fastRoute = 0;
     bool valid = false;
+
 
     for(int i = 0; i < src->getTableSize(); i++)
     {
@@ -268,40 +277,48 @@ bool OLSR::sendPacketEnergy(int srcID, int destID)
         }
     }
 
-	if( src -> isOneHopNeighbor(dest) )
-	{
-		cout << "Node " << srcID << " to " << destID << endl;
+
+    if( src -> isOneHopNeighbor(dest) )
+    {
+        cout << "Node " << srcID << " to " << destID << endl;
         src -> losePower();
         dest -> losePower();
-		return true;
-	}
+        return true;
+    }
     for(int i = 0; i < src->getTableSize(); i++)
     {
-		if( src -> getRoute(i).getDestAddress() == dest )
-		{
-			currentRoute = src->getRoute(i);
-			destMPR = currentRoute.getDestMPR();
+            currentRoute = src->getRoute(i);
+            for( int p = 0; p < src->getTableSize(); p++ )
+            {
+                currentRoute = src->getRoute(p);
+                if( currentRoute.getDestAddress() == dest && fastestRoute.getMPRSequence() > currentRoute.getMPRSequence() )
+                {
+                        fastestRoute = currentRoute;
+                        fastRoute = p;
+                }
+            }
+            destMPR = fastestRoute.getDestMPR();
             if(destMPR->getEnergy() < 50)
             {
                 vector<Route> tempTable = src->getRoutingTable();
-                tempTable.erase(tempTable.begin() + i);
+                tempTable.erase(tempTable.begin() + fastRoute);
                 for(unsigned int j = 0; j < tempTable.size(); j++)
                 {
-                    if(tempTable[j].getDestAddress() == dest /*&& tempTable[j].getDestAddress()->getEnergy() > 50*/)
+                    if(tempTable[j].getDestAddress() == dest)
                     {
-                        currentRoute = tempTable[j];
-                        destMPR = currentRoute.getDestMPR();
+                        fastestRoute = tempTable[j];
+                        destMPR = fastestRoute.getDestMPR();
                     }
                 }
             }
-			dest -> losePower();
-			sendPacket(srcID, destMPR->getNodeID());
-			cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
+            dest -> losePower();
+            sendPacket(srcID, destMPR->getNodeID());
+            cout << "Node " << destMPR->getNodeID() << " to " << destID << endl;
             break;
-		}
     }
     checkNodes();
     return valid;
+
 }
 
 // Checks to see if any nodes have died and handles them accordingly
