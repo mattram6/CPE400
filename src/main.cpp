@@ -4,17 +4,20 @@
 using namespace std;
 
 void update(OLSR *network);
-bool test1();
-bool test1Energy();
+void testSmall(OLSR *network);
+void testSmallEnergy(OLSR *network);
+void testLarge(OLSR *network);
+void testLargeEnergy(OLSR *network);
 
 int main()
 {
     bool size;
-    cout << "Press 0 for small network or 1 or greater for large network" << endl;
+    cout << "Select Network" << endl;
+    cout << "Enter 0 for small network or 1 or greater for large network" << endl;
     cin >> size;
     OLSR *myNetwork = new OLSR(size);
 
-    // Debugging
+    // Build 2-Hop Neighbor Tables
     for(int p = 0; p < myNetwork->getNumOfNodes(); p++)
     {
         myNetwork->broadcastHello(myNetwork->getNode(p));
@@ -47,7 +50,7 @@ int main()
 	
     myNetwork->topologyControl();
     
-    // Debugging
+    // Build routing table
     for(int i = 0; i < myNetwork->getNumOfNodes(); i++)
     {
         for(int j = 0; j < myNetwork->getNumOfNodes(); j++)
@@ -59,18 +62,39 @@ int main()
         }
     }
 
-    // Print routing table
-    //myNetwork->printRoutingTable();
-   
-	for(int i = 0; i < 120; i++)
+    cout << "Select Test" << endl;
+    if(size)
     {
-        myNetwork->sendPacketEnergy(0, 2);
-        if(myNetwork->checkNodes())
+        bool test;
+        cout << "Enter 0 for OLSR or 1 for OLSR with energy" << endl;
+        cin >> test;
+        if(test)
         {
-            update(myNetwork);
+	        testLargeEnergy(myNetwork);
+            //myNetwork->checkNetworkPower();
+        }
+        if(!test)
+        {
+            testLarge(myNetwork);
+            //myNetwork->checkNetworkPower();
         }
     }
-    myNetwork->checkNetworkPower();
+    if(!size)
+    {
+        bool test;
+        cout << "Enter 0 for OLSR or 1 for OLSR with energy" << endl;
+        cin >> test;
+        if(test)
+        {
+	        testSmallEnergy(myNetwork);
+            //myNetwork->checkNetworkPower();
+        }
+        if(!test)
+        {
+            testSmall(myNetwork);
+            //myNetwork->checkNetworkPower();
+        }
+    }
     
     return 0;
 }
@@ -95,9 +119,58 @@ void update(OLSR *network)
     }
 }
 
-bool test1()
+void testSmall(OLSR *network)
 {
-    //while(no error)
-    return true;
+    for(int i = 0; i < 3; i++)
+    {
+        network->sendPacket(1, 9);
+        network->checkNetworkPower();
+    }
+    for(int i = 0; i < 7; i++)
+    {
+        network->sendPacket(0, 2);
+        network->checkNetworkPower();
+    }
 }    
-        
+
+void testSmallEnergy(OLSR *network)
+{
+    for(int i = 0; i < 3; i++)
+    {
+        network->sendPacketEnergy(1, 9);
+        network->checkNetworkPower();
+    }
+    for(int i = 0; i < 7; i++)
+    {
+        network->sendPacketEnergy(0, 2);
+        network->checkNetworkPower();
+    }
+}            
+
+void testLarge(OLSR *network)
+{
+    for(int i = 0; i < 5; i++)
+    {
+        network->sendPacket(3, 34);
+        network->checkNetworkPower();
+    }
+    for(int i = 0; i < 5; i++)
+    {
+        network->sendPacket(2, 34);
+        network->checkNetworkPower();
+    }
+}
+
+void testLargeEnergy(OLSR *network)
+{
+    for(int i = 0; i < 5; i++)
+    {
+        network->sendPacketEnergy(3, 34);
+        network->checkNetworkPower();
+    }
+    for(int i = 0; i < 5; i++)
+    {
+        network->sendPacket(2, 34);
+        network->checkNetworkPower();
+    }
+}

@@ -166,7 +166,7 @@ int Node::getEnergy()
 // decrements the energy of the node
 void Node::losePower()
 {
-	energy--;
+	energy = energy -10;
 }
 
 // removes the desired route from the routing table
