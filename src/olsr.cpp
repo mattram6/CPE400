@@ -113,41 +113,38 @@ void OLSR::topologyControl()
 {
     for(int i = 0; i < getNumOfNodes(); i++)
     {
-        if(network[i]->getOneHopNeighborNum() == 1)
+        if(network[i]->getOneHopNeighborNum() == 1) // check for isolated nodes
         {
-			cout << "Node " << network[i]->getOneHopNeighbor(0) -> getNodeID() << " is a MPR" << endl;
             network[i]->getOneHopNeighbor(0)->setMPR(true);
         }
     }
 
-    int counter = 4;
+    int counter = 4;    // number of connections to check for
     while(counter > 0)
     {
-        for(unsigned int i = 0; i < network.size(); i++)
+        for(unsigned int i = 0; i < network.size(); i++) // for each node in the network
         {
             if(network[i]->getOneHopNeighborNum() == counter)
             {
-                for(int j = 0; j < network[i]->getOneHopNeighborNum(); j++)
+                for(int j = 0; j < network[i]->getOneHopNeighborNum(); j++) // for each one-hop neighbor
                 {
-                    if((!network[i]->getOneHopNeighbor(j)->neighboringMPR()))
+                    if((!network[i]->getOneHopNeighbor(j)->neighboringMPR()))   // if neighbor doesn't have neighboring MPR
                     {
-						cout << "Node " << network[i] -> getNodeID() << " is a MPR" << endl;
-                        network[i]->setMPR(true);
+                        network[i]->setMPR(true);   // designate as MPR
 						break;
                     }
                 }
-				if(!network[i]->getMPR())
-				{
-					for( int k = 0; k < network[i]->getTwoHopNeighborNum(); k++ )
-					{
-						if((!network[i]->getTwoHopNeighbor(k)->neighboringMPR()))
-						{
-							cout << "Node " << network[i] -> getNodeID() << " is a MPR" << endl;
-		                    network[i]->setMPR(true);
-							break;
-						}
-					}
-				}
+	            if(!network[i]->getMPR())
+		        {
+			        for( int k = 0; k < network[i]->getTwoHopNeighborNum(); k++ )   // for each two-hop neighbor
+			        {
+				        if((!network[i]->getTwoHopNeighbor(k)->neighboringMPR()))   // if two-hop neighbor doesn't have neighboring MPR
+				        {
+		                    network[i]->setMPR(true);   // designate as MPR
+				            break;
+				        }
+			        }
+		        }
             }
         }
         counter--;
