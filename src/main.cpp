@@ -13,7 +13,7 @@ int main()
 {
     bool size;
     cout << "Select Network" << endl;
-    cout << "Enter 0 for small network or 1 or greater for large network" << endl;
+    cout << "Enter 0 for small network or 1 for large network" << endl;
     cin >> size;
     OLSR *myNetwork = new OLSR(size);
 
@@ -22,31 +22,6 @@ int main()
     {
         myNetwork->broadcastHello(myNetwork->getNode(p));
     }
-
-    /*
-	cout << "1 Hop Neighbors of Network" << endl << endl;
-	for(int x = 0; x < myNetwork->getNumOfNodes(); x++)
-	{
-		Node* currentNode = myNetwork->getNode(x);
-		cout << "Node " << x << ": ";
-		for(int y = 0; y < currentNode->getOneHopNeighborNum(); y++ )
-		{
-			cout << (currentNode-> getOneHopNeighbor(y)->getNodeID()) << " ";
-		}
-		cout << endl;
-	}
-    cout << endl << "2 Hop Neighbors of Network" << endl << endl;
-	for(int i = 0; i < myNetwork->getNumOfNodes(); i++)
-	{
-		Node* currentNode = myNetwork->getNode(i);
-		cout << "Node " << i << ": ";
-		for(int j = 0; j < currentNode->getTwoHopNeighborNum(); j++ )
-		{
-			cout << (currentNode-> getTwoHopNeighbor(j)->getNodeID()) << " ";
-		}
-		cout << endl;
-	}
-    */
 	
     myNetwork->topologyControl();
     
@@ -70,13 +45,11 @@ int main()
         cin >> test;
         if(test)
         {
-	        testLargeEnergy(myNetwork);
-            //myNetwork->checkNetworkPower();
+	    testLargeEnergy(myNetwork);
         }
         if(!test)
         {
             testLarge(myNetwork);
-            //myNetwork->checkNetworkPower();
         }
     }
     if(!size)
@@ -86,13 +59,11 @@ int main()
         cin >> test;
         if(test)
         {
-	        testSmallEnergy(myNetwork);
-            //myNetwork->checkNetworkPower();
+	    testSmallEnergy(myNetwork);
         }
         if(!test)
         {
             testSmall(myNetwork);
-            //myNetwork->checkNetworkPower();
         }
     }
     

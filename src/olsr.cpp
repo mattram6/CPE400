@@ -173,17 +173,17 @@ void OLSR::checkNetworkPower()
 //Sets up 2 Hop Neighbor Table
 void OLSR::broadcastHello(Node* node)
 {
-    for(int i = 0; i < node->getOneHopNeighborNum(); i++)
+    for(int i = 0; i < node->getOneHopNeighborNum(); i++)	
     {
         Node *currentNeighbor = node -> getOneHopNeighbor(i);
         for(int j = 0; j < currentNeighbor -> getOneHopNeighborNum(); j++) 
         {
 			for(int k = 0; k < node -> getOneHopNeighborNum(); k++)
-            {
-            	if(node == currentNeighbor -> getOneHopNeighbor(j)) 
-                {
+            		{
+            			if(node == currentNeighbor -> getOneHopNeighbor(j)) 
+                		{
 					break;
-                }
+                		}
 				else if((currentNeighbor -> getOneHopNeighbor(j) == node -> getOneHopNeighbor(k)))
 				{
 					break;
@@ -192,14 +192,14 @@ void OLSR::broadcastHello(Node* node)
 				{
 					break;
 				}
-                else
+                		else
 				{
 					node -> addTwoHopNeighbor(currentNeighbor -> getOneHopNeighbor(j));
 					break;
 				}
-    		}
-		}
+    			}
 	}
+    }
 	
 }
 
